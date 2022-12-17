@@ -2,38 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
+use Illuminate\Http\Request;
+use App\Http\Resources\PostResource;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
+        return  Inertia::render('Posts/Index');
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function create(Request $request)
     {
+
+        $data=Post::withWhereHas('category:id,name')->paginate($request->query('per_page', 10));
+        return PostResource::collection($data);
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StorePostRequest  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(StorePostRequest $request)
     {
         //
