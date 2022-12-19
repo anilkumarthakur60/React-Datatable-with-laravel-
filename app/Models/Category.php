@@ -17,6 +17,7 @@ class Category extends Model
         return $this->hasMany(Post::class);
     }
 
+    protected $guarded = [];
 
     public function sluggable(): array
     {

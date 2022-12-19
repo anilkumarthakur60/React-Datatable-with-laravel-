@@ -3,6 +3,7 @@ import AppLayout from '@/Layouts/AppLayout';
 import axios from "axios";
 import DataTable from 'react-data-table-component';
 import useRoute from '@/Hooks/useRoute';
+import FilterComponent from "@/Pages/Category/FilterComponent";
 
 
 export default function Index() {
@@ -12,14 +13,33 @@ export default function Index() {
     const [loading, setLoading] = useState(false);
     const [totalRows, setTotalRows] = useState(0);
     const [perPage, setPerPage] = useState(10);
+    const [search, setSearch] = useState(null);
+    const [page, setPage] = useState(1);
+    const [pending, setPending] = React.useState(true);
+    const [filterText, setFilterText] = React.useState('');
+    const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false);
+
+
+    const subHeaderComponentMemo = React.useMemo(() => {
+        const handleClear = () => {
+            if (filterText) {
+                setResetPaginationToggle(!resetPaginationToggle);
+                setFilterText('');
+            }
+        };
+
+        return (
+            <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} />
+        );
+    }, [filterText, resetPaginationToggle]);
 
     const columns = [
 
         {
             name: 'Name',
-            selector: row => row.title,
+            selector: row => row.name,
             sortable: true,
-            sortField: 'title',
+            sortField: 'name',
             filterable: true,
 
         },
@@ -29,36 +49,42 @@ export default function Index() {
             selector: row => row.category?.name,
             sortable: true,
             sortField: 'category_id',
-
             filterable: true,
         },
     ];
-    const fetchUsers = async page => {
+
+
+    const fetchPosts = useCallback(async (page) => {
+
+        setPage(page);
         setLoading(true);
+        const response = await axios.get(route('posts.create', {
+            page: page,
+            per_page: perPage,
+            search: search,
+            order: 'asc',
 
-        const response = await axios.get(`${route('posts.create')}?page=${page}&per_page=${perPage}&delay=1`);
-
+        }));
         setData(response.data.data);
         setTotalRows(response.data.total);
         setLoading(false);
-    };
+    }, []);
 
     const handlePageChange = page => {
-        fetchUsers(page);
+        console.log('---------data logging handlePageChange--------',page);
+        fetchPosts(page);
     };
 
     const handlePerRowsChange = async (newPerPage, page) => {
+        console.log('---------data logging handlePerRowsChange--------',newPerPage,page);
         setLoading(true);
-
-        const response = await axios.get(`${route('posts.create')}?page=${page}&per_page=${newPerPage}&delay=1`);
-
-        setData(response.data.data);
+        fetchPosts(page);
         setPerPage(newPerPage);
         setLoading(false);
     };
 
     useEffect(() => {
-        fetchUsers(1); // fetch page 1 of users
+        fetchPosts(page);
 
     }, []);
 
@@ -83,6 +109,13 @@ export default function Index() {
                     paginationTotalRows={totalRows}
                     onChangeRowsPerPage={handlePerRowsChange}
                     onChangePage={handlePageChange}
+                    paginationPerPage={perPage}
+                    paginationRowsPerPageOptions={[10, 20, 30, 40, 50, 100,0]}
+                    subHeaderComponent={subHeaderComponentMemo}
+                    paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1
+
+
+
                 />
             </div>
         </AppLayout>

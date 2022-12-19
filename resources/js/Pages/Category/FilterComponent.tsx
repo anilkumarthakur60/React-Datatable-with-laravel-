@@ -6,7 +6,7 @@ const FilterComponent = ({filterText, onFilter, onClear}) => (
         <div className="grid gap-6 mb-6 md:grid-cols-2">
             <div>
                 <label htmlFor="first_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First
-                    name</label>
+                    nkjashdakhame</label>
                 <input
                     type="text"
                     id="first_name"

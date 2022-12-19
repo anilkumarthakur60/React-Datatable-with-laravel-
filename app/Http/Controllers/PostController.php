@@ -13,14 +13,16 @@ class PostController extends Controller
 {
     public function index()
     {
-        return  Inertia::render('Posts/Index');
+        return  Inertia::render('Posts/Indexs');
         //
     }
 
     public function create(Request $request)
     {
 
-        $data=Post::withWhereHas('category:id,name')->paginate($request->query('per_page', 10));
+        $data=Post::query()
+            ->orderBy($request->query('sort', 'id'), $request->query('sortDir', 'desc'))
+            ->paginate($request->query('per_page', 10));
         return PostResource::collection($data);
         //
     }
