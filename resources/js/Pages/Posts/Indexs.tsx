@@ -3,8 +3,8 @@ import AppLayout from '@/Layouts/AppLayout';
 import DataTable from 'react-data-table-component';
 import useRoute from '@/Hooks/useRoute';
 import axios from "axios";
-import {set} from "lodash";
-import {data} from "autoprefixer";
+import {debounce} from "lodash";
+import FilterComponent from "@/Pages/Category/FilterComponent";
 
 export default function Index() {
 
@@ -18,18 +18,21 @@ export default function Index() {
     const [perPage, setPerPage] = useState(10);
     const [search, setSearch] = useState('');
     const route = useRoute();
+    const [filterText, setFilterText] = useState();
+    const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
+
 
     const getData = async page => {
-            const response = await axios.get(route('posts.create',
-                {
-                    page: page,
-                    search: search,
-                    sort: sort,
-                    sortDir: sortDir,
-                    filters: filters,
-                    per_page: perPage
+        const response = await axios.get(route('posts.create',
+            {
+                page: page,
+                search: search  ,
+                sort: sort,
+                sortDir: sortDir,
+                filters: filters,
+                per_page: perPage
 
-                }));
+            }));
             setData(response.data.data);
             setTotalRows(response.data.meta.total);
 
@@ -82,18 +85,19 @@ export default function Index() {
 
         setPerPage(newPerPage);
         setPage(page);
-        const response = await axios.get(route('posts.create',
-            {
-                page: page,
-                search: search,
-                sort: sort,
-                sortDir: sortDir,
-                filters: filters,
-                per_page: newPerPage
-
-            }));
-        setData(response.data.data);
-        setTotalRows(response.data.meta.total);
+        getData(page);
+        // const response = await axios.get(route('posts.create',
+        //     {
+        //         page: page,
+        //         search: filterText,
+        //         sort: sort,
+        //         sortDir: sortDir,
+        //         filters: filters,
+        //         per_page: newPerPage
+        //
+        //     }));
+        // setData(response.data.data);
+        // setTotalRows(response.data.meta.total);
 
     };
     const handlePageChange = async page => {
@@ -104,28 +108,53 @@ export default function Index() {
     useEffect(() => {
             getData(1);
         },
-        []);
+        [
+            page,
+            sort,
+            sortDir,
+            filters,
+            loading,
+            totalRows,
+            perPage,
+            search,
+            filterText,
+
+        ]);
 
     const resetAll = () => {
+
         setFilters({});
         setSearch('');
-
         setPage(1);
         setSort('name');
         setSortDir('asc');
         setPerPage(10);
-        getData(1);
+        getData(page);
 
     }
-    const paginationOptions ={
-            rowsPerPageText: 'Rows per page:',
-            rangeSeparatorText: 'off',
-            noRowsPerPage: false,
-            selectAllRowsItem: true,
-            selectAllRowsItemText: 'All',
+    const paginationOptions = {
+        rowsPerPageText: 'Rows per page:',
+        rangeSeparatorText: 'off',
+        noRowsPerPage: false,
+        selectAllRowsItem: true,
+        selectAllRowsItemText: 'All',
 
 
-        }
+    }
+
+    const subHeaderComponentMemo = React.useMemo(() => {
+        const handleClear = () => {
+            if (filterText) {
+                setResetPaginationToggle(!resetPaginationToggle);
+                setFilterText('');
+            }
+        };
+
+        return (
+            <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear}
+                             filterText={filterText}/>
+        );
+    }, [filterText, resetPaginationToggle]);
 
 
     return (
@@ -162,6 +191,37 @@ export default function Index() {
                     fixedHeaderScrollHeight="100vh"
                     highlightOnHover={true}
                     paginationComponentOptions={paginationOptions}
+                    subHeader={true}
+                    persistTableHead={true}
+
+                    paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1
+                    subHeaderComponent={
+                        <div className="flex flex-row justify-between items-center">
+                            <div className="flex flex-row justify-between items-center">
+                                <input
+                                    type="text"
+                                    className="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none"
+                                    placeholder="Search"
+                                    value={search}
+                                    onChange={e => setSearch(e.target.value)}
+                                />
+                                <button type="button" onClick={() => getData(page)}
+                                        className="py-2 px-3 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                >
+                                    Search
+                                </button>
+                            </div>
+                            <div className="flex flex-row justify-between items-center">
+                                <button type="button" onClick={resetAll}
+                                        className="py-2 px-3 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                >
+                                    Reset
+                                </button>
+                            </div>
+                        </div>
+
+
+                    }
 
 
                 />
