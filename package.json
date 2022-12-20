@@ -31,6 +31,7 @@
     "classnames": "^2.3.2",
     "react": "^18.2.0",
     "react-data-table-component": "^7.5.3",
+    "react-debounce-input": "^3.3.0",
     "react-dom": "^18.2.0",
     "styled-components": "^5.3.6",
     "ziggy-js": "^1.5.0"

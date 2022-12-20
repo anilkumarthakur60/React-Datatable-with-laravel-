@@ -5,6 +5,8 @@ import useRoute from '@/Hooks/useRoute';
 import axios from "axios";
 import {debounce} from "lodash";
 import FilterComponent from "@/Pages/Category/FilterComponent";
+import {DebounceInput} from 'react-debounce-input';
+
 
 export default function Index() {
 
@@ -205,12 +207,21 @@ export default function Index() {
                                     value={search}
                                     onChange={e => setSearch(e.target.value)}
                                 />
+                                <DebounceInput
+                                    minLength={2}
+                                    value={search}
+                                    className={`border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none`}
+
+                                    debounceTimeout={500}
+                                    onChange={event => setSearch(event.target.value)} />
+
                                 <button type="button" onClick={() => getData(page)}
                                         className="py-2 px-3 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                 >
                                     Search
                                 </button>
                             </div>
+
                             <div className="flex flex-row justify-between items-center">
                                 <button type="button" onClick={resetAll}
                                         className="py-2 px-3 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
