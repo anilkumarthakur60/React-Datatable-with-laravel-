@@ -195,7 +195,7 @@ export default function Index() {
                     paginationComponentOptions={paginationOptions}
                     subHeader={true}
                     persistTableHead={true}
-
+                    paginationRowsPerPageOptions={[10, 20, 30, 40, 50, 100, 500, 1000]}
                     paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1
                     subHeaderComponent={
                         <div className="flex flex-row justify-between items-center">
