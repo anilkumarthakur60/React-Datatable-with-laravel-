@@ -23,7 +23,8 @@ class PostObserver
 
     public function deleted(Post $post)
     {
-        //
+
+        broadcast(new PageRefreshEvent($post))->toOthers();
     }
 
     public function restored(Post $post)
@@ -33,6 +34,7 @@ class PostObserver
 
     public function forceDeleted(Post $post)
     {
-        //
+
+        broadcast(new PageRefreshEvent($post))->toOthers();
     }
 }

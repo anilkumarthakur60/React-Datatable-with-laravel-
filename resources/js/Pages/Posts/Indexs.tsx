@@ -117,7 +117,7 @@ export default function Index() {
           columns={columns}
           data={data}
 
-
+          defaultSortField={sortBy}
           progressPending={loading}
           pagination
           paginationServer

@@ -88,7 +88,7 @@ function usePaginationData({ routeName }) {
   };
 
   const resetPaginationToggle = () => {
-    this.setState({ resetPaginationToggle: !this.state.resetPaginationToggle });
+    setPage(1);
 
   }
 

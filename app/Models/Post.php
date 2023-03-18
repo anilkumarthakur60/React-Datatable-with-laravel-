@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\CRUD;
+use App\Events\PageRefreshEvent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Cviebrock\EloquentSluggable\Sluggable;
@@ -45,5 +46,11 @@ class Post extends Model
         }
 
         return $query->likeWhere(['name'],$search);
+    }
+
+    public function afterDeleteProcess(): void
+    {
+
+        broadcast(new PageRefreshEvent($this))->toOthers();
     }
 }

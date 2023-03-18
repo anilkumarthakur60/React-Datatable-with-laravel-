@@ -23,6 +23,6 @@ Route::controller(PostController::class)->prefix('posts')->as('apiPosts.')->grou
     Route::get('', 'index')->name('index');
     Route::post('', 'store')->name('store');
     Route::get('{id}', 'show')->name('show');
-    Route::put('update/{id}', 'update')->name('update');
-    Route::delete('delete/{id}', 'delete')->name('delete');
+    Route::put('{id}', 'update')->name('update');
+    Route::delete('{id}', 'destroy')->name('destroy');
 });
