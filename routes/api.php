@@ -21,8 +21,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::controller(PostController::class)->prefix('posts')->group(function () {
     Route::get('', 'index');
+    Route::post('', 'store');
     Route::get('{id}', 'show');
-    Route::post('create', 'create');
     Route::put('update/{id}', 'update');
     Route::delete('delete/{id}', 'delete');
 });

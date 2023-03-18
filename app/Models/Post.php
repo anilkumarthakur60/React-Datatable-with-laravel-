@@ -16,6 +16,11 @@ class Post extends Model
     use  CRUD;
 
     protected $guarded = [];
+    protected $fillable = [
+        'name',
+        'slug',
+        'category_id'
+    ];
 
 
     public function category(): BelongsTo
