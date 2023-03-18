@@ -13,11 +13,10 @@ const appName =
 
 createInertiaApp({
   title: title => `${title} - ${appName}`,
-  resolve: name =>
-    resolvePageComponent(
-      `./Pages/${name}.tsx`,
-      import.meta.glob('./Pages/**/*.tsx'),
-    ),
+    resolve: name =>{
+        console.debug('resolving page', name)
+        return resolvePageComponent(`./Pages/${name}.tsx`, import.meta.glob('./Pages/**'))
+    },
   setup({ el, App, props }) {
     const root = createRoot(el);
     return root.render(

@@ -26,16 +26,23 @@
     "vite": "^3.2.5"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@fontsource/roboto": "^4.5.8",
     "@headlessui/react": "^1.7.5",
     "@inertiajs/inertia": "^0.11.1",
     "@inertiajs/inertia-react": "^0.8.1",
     "@inertiajs/progress": "^0.2.7",
+    "@mui/icons-material": "^5.11.11",
+    "@mui/material": "^5.11.13",
+    "@mui/styled-engine-sc": "^5.11.11",
     "classnames": "^2.3.2",
     "react": "^18.2.0",
     "react-data-table-component": "^7.5.3",
     "react-debounce-input": "^3.3.0",
     "react-dom": "^18.2.0",
-    "styled-components": "^5.3.6",
+    "react-icons": "^4.8.0",
+    "styled-components": "^5.3.9",
     "ziggy-js": "^1.5.0"
   },
   "prettier": {
