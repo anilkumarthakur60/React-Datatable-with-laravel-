@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 
-        Category::factory(100)->hasPosts(10)->create();
+        Category::factory(1)->hasPosts(2)->create();
 
         User::updateOrCreate([
             'name' => 'Admin',

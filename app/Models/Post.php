@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\CRUD;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Cviebrock\EloquentSluggable\Sluggable;
@@ -12,6 +13,7 @@ class Post extends Model
 {
     use HasFactory;
     use Sluggable;
+    use  CRUD;
 
     protected $guarded = [];
 
