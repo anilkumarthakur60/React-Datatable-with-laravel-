@@ -1,5 +1,6 @@
 <?php
 
+use App\Broadcasting\PageRefreshChannel;
 use Illuminate\Support\Facades\Broadcast;
 
 /*
@@ -12,7 +13,11 @@ use Illuminate\Support\Facades\Broadcast;
 | used to check if an authenticated user can listen to the channel.
 |
 */
-
-Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
-});
+//
+//Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
+//    return (int) $user->id === (int) $id;
+//});
+//Broadcast::channel('pageRefreshChannel.{id}', function (User $user, $id) {
+//    return $user->id ===(int) $id;
+//});
+Broadcast::channel('pageRefreshChannel.{id}', PageRefreshChannel::class);
