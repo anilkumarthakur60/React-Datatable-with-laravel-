@@ -6,7 +6,7 @@ function usePaginationData({ routeName }) {
 
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
-  const [sort, setSort] = useState('name');
+  const [sortBy, setSortBy] = useState('name');
   const [sortDir, setSortDir] = useState('asc');
   const [filters, setFilters] = useState({});
   const [loading, setLoading] = useState(false);
@@ -22,7 +22,7 @@ function usePaginationData({ routeName }) {
       url: routeName,
       params: {
         page: page,
-        sort: sort,
+        sort: sortBy,
         sortDir: sortDir,
         filters: JSON.stringify(filters),
         per_page: perPage,
@@ -44,7 +44,7 @@ function usePaginationData({ routeName }) {
   };
 
   const handleSort = async (column, sortDirection) => {
-    setSort(column.sortField);
+    setSortBy(column.sortField);
     setSortDir(sortDirection);
   };
 
@@ -62,7 +62,7 @@ function usePaginationData({ routeName }) {
 
     setFilters({});
     setPage(1);
-    setSort('name');
+    setSortBy('name');
     setSortDir('asc');
     setPerPage(10);
 
@@ -73,7 +73,7 @@ function usePaginationData({ routeName }) {
     },
     [
       page,
-      sort,
+      sortBy,
       sortDir,
       filters,
       totalRows,
@@ -87,14 +87,20 @@ function usePaginationData({ routeName }) {
     }));
   };
 
+  const resetPaginationToggle = () => {
+    this.setState({ resetPaginationToggle: !this.state.resetPaginationToggle });
+
+  }
+
   return {
+    resetPaginationToggle,
     handleFilterChange,
     handleRowPerPageChange,
     handlePageChange,
     handleSort,
     data,
     page, setPage,
-    sort, setSort,
+    sortBy, setSortBy,
     sortDir, setSortDir,
     filters, setFilters,
     loading,

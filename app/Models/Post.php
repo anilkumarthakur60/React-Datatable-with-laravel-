@@ -19,7 +19,7 @@ class Post extends Model
     protected $fillable = [
         'name',
         'slug',
-        'category_id'
+        'category_id',
     ];
 
 
@@ -38,12 +38,12 @@ class Post extends Model
         ];
     }
 
-
-    public function scopeWhereLike(Builder $query, $column, $value):Builder
+    public function scopeQueryFilter(Builder $query,$search): Builder
     {
-        if (empty($value)) {
+        if (empty($search)) {
             return $query;
         }
-        return $query->where($column, 'like', '%' . $value . '%');
+
+        return $query->likeWhere(['name'],$search);
     }
 }

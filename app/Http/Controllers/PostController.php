@@ -22,10 +22,9 @@ class PostController extends Controller
     public function create(Request $request)
     {
 
-        $data = Post::query()
-            ->whereLike('name', $request->search)
-            ->orderBy($request->query('sort', 'id'), $request->query('sortDir', 'desc'))
-            ->paginate($request->query('per_page', 10));
+
+
+        $data = Post::initializer()->paginates();
 
         return PostResource::collection($data);
         //

@@ -13,24 +13,25 @@ export default function Index() {
   const { auth } = usePage().props;
 
   const {
-    logData,
-    getData,
-    resetAll,
-    data,
-
-    loading,
-    totalRows,
-    perPage,
-    handleSort,
+     handleFilterChange,
     handleRowPerPageChange,
     handlePageChange,
-    resetPaginationToggle,
-    filters,
-    setFilters,
-    handleFilterChange,
+    handleSort,
+    data,
+    page, setPage,
+    sortBy, setSortBy,
+    sortDir, setSortDir,
+    filters, setFilters,
+    loading,
+    getData,
+    totalRows,
+    perPage, setPerPage,
+    logData,
+    resetAll,
+    resetPaginationToggle, setResetPaginationToggle,
 
   } = usePaginationData({
-    routeName: route('posts.create'),
+    routeName: route('apiPosts.index'),
   });
 
 
@@ -87,6 +88,7 @@ export default function Index() {
 
 
   };
+
 
 
   return (

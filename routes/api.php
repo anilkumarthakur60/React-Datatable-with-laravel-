@@ -19,10 +19,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::controller(PostController::class)->prefix('posts')->group(function () {
-    Route::get('', 'index');
-    Route::post('', 'store');
-    Route::get('{id}', 'show');
-    Route::put('update/{id}', 'update');
-    Route::delete('delete/{id}', 'delete');
+Route::controller(PostController::class)->prefix('posts')->as('apiPosts.')->group(function () {
+    Route::get('', 'index')->name('index');
+    Route::post('', 'store')->name('store');
+    Route::get('{id}', 'show')->name('show');
+    Route::put('update/{id}', 'update')->name('update');
+    Route::delete('delete/{id}', 'delete')->name('delete');
 });
